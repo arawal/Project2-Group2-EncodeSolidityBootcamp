@@ -14,24 +14,30 @@ function convertStringArrayToBytes32(array: string[]) {
 }
 
 async function main() {
-    const provider = ethers.getDefaultProvider("goerli")
+    const network = "goerli";
+    const provider = ethers.getDefaultProvider(network)
     let wallet: Wallet;
 
-    if (process.env.MNEMONIC != "") {
+    if(process.env.MNEMONIC != "") {
         wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "")
-    } else {
+    }else if(process.env.PRIVATE_KEY != "") {
         wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "")
+    }else{
+        throw new Error("No mnemonic seed or private key found in env");
     }
+
     const signer = wallet.connect(provider)
     const balanceBN = await signer.getBalance();
 
     console.log(`Connected to ${signer.address}`);
     console.log(`Balance: ${balanceBN.toString()} Wei`);
 
+    if(!balanceBN) throw new Error("Not enough wei");
+
     const args = process.argv;
     const proposals = args.slice(2);
 
-    if (proposals.length <= 0) throw new Error("Not enough parameters");
+    if(proposals.length <= 0) throw new Error("Not enough proposal values");
 
     console.log("Deploying...");
     console.log("Proposals: ");
@@ -44,11 +50,10 @@ async function main() {
 
     ballotContract = await ballotFactory.deploy(
         convertStringArrayToBytes32(proposals)
-    )
+    ) as Ballot;
 
     await ballotContract.deployed();
-
-    console.log(`deployed at ${ballotContract.address}`);
+    console.log(`New contract ${ballotContract.address} deployed. Etherscan: https://${network}.etherscan.io/address/${ballotContract.address}`);
 }
 
 main().catch((error) => {
