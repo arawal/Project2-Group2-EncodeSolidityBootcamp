@@ -3,6 +3,8 @@ import { Ballot, Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config()
 
+
+
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
 
 function convertStringArrayToBytes32(array: string[]) {
