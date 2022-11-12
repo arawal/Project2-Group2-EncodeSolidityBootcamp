@@ -33,3 +33,5 @@ typechain-types
 cache
 artifacts
 
+.editorconfig
+.vscode
