@@ -1,9 +1,15 @@
 import { ethers, Wallet } from "ethers";
 import { Ballot, Ballot__factory } from "../typechain-types";
+import * as dotenv from "dotenv";
+dotenv.config()
 
 async function vote() {
     const provider = ethers.getDefaultProvider("goerli")
     let wallet: Wallet;
+
+    console.log(process.env.MNEMONIC)
+
+    if (process.env.MNEMONIC == undefined && process.env.PRIVATE_KEY == undefined) throw new Error("Could not read mnemonic or private key")
 
     if (process.env.MNEMONIC != "") {
         wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "")
@@ -20,13 +26,13 @@ async function vote() {
 
     if (args.length <= 0) throw new Error("Not enough parameters");
 
-    const vote = args[0];
+    const contract = args[0];
+    const vote = args[1];
     console.log(`Voting for ${vote}`);
 
-    let ballotContract: Ballot;
     const ballotFactory = new Ballot__factory(signer);
     const ballotContract = await ballotFactory.attach(
-        "" // The deployed contract address
+        contract
     );
 
     const tx = await ballotContract.vote(vote);
