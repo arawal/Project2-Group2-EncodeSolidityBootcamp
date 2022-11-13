@@ -5,7 +5,14 @@ dotenv.config();
 
 async function giveRightToVote() {
     const provider = ethers.getDefaultProvider("goerli");
-    const wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "");
+    let wallet: Wallet;
+
+    // check for accounts to use as signer in .env via mnemonic or private key
+    if (process.env.MNEMONIC != "") {
+        wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "")
+    } else {
+        wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "")
+    }
     const signer = wallet.connect(provider);
     const balanceBN = await signer.getBalance();
     console.log(`Connected to the account of address ${signer.address}`);
@@ -28,4 +35,3 @@ giveRightToVote().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
-
