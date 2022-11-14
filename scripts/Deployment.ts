@@ -3,6 +3,8 @@ import { Ballot, Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config()
 
+
+
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
 
 function convertStringArrayToBytes32(array: string[]) {
@@ -55,3 +57,30 @@ main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
 });
+
+
+/*
+Output:
+(base) karenjyang@Karens-MBP Project2-Group2-EncodeSolidityBootcamp %  yarn run ts-node --files ./scripts/Deployment.ts "FirstProposal" "SecondProposal" "ThirdProposal"
+========= NOTICE =========
+Request-Rate Exceeded  (this message will not be repeated)
+
+The default API keys for each service are provided as a highly-throttled,
+community resource for low-traffic projects and early prototyping.
+
+While your application will continue to function, we highly recommended
+signing up for your own API keys to improve performance, increase your
+request rate/limit and enable other perks, such as metrics and advanced APIs.
+
+For more details: https://docs.ethers.io/api-keys/
+==========================
+Connected to 0x97c81E99e9890641058C67DE94d6ED5544432F10
+Balance: 96382086355826653 Wei
+Deploying...
+Proposals: 
+proposal 1: FirstProposal
+proposal 2: SecondProposal
+proposal 3: ThirdProposal
+deployed at 0x7B7Bc54FF75C74520f441263a6efceF036f4FA72
+
+*/
