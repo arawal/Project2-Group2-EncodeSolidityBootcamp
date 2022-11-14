@@ -15,7 +15,7 @@ npx hardhat run scripts/deploy.ts
 ## Contract Details
 Network: `Goerli Testnet`
 
-Deployed Contract Address: `0x5FbDB2315678afecb367f032d93F642f64180aa3`
+Deployed Contract Address: `0x2B671F8EEc0e3416781b306271A84E3232Ec5ac1`
 
 ## Running the scripts
 
