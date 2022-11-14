@@ -1,11 +1,18 @@
-import { ethers } from "ethers";
+import { ethers, Wallet } from "ethers";
 import { Ballot, Ballot__factory } from "../typechain-types";
 import * as dotenv from "dotenv";
 dotenv.config();
 
 async function giveRightToVote() {
     const provider = ethers.getDefaultProvider("goerli");
-    const wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "");
+    let wallet: Wallet;
+    if (process.env.MNEMONIC == undefined && process.env.PRIVATE_KEY == undefined) throw new Error("Could not read mnemonic or private key")
+
+    if (process.env.MNEMONIC != "") {
+        wallet = ethers.Wallet.fromMnemonic(process.env.MNEMONIC ?? "")
+    } else {
+        wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "")
+    }
     const signer = wallet.connect(provider);
     const balanceBN = await signer.getBalance();
     console.log(`Connected to the account of address ${signer.address}`);

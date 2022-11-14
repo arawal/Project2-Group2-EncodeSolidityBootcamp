@@ -6,9 +6,6 @@ dotenv.config()
 async function vote() {
     const provider = ethers.getDefaultProvider("goerli")
     let wallet: Wallet;
-
-    console.log(process.env.MNEMONIC)
-
     if (process.env.MNEMONIC == undefined && process.env.PRIVATE_KEY == undefined) throw new Error("Could not read mnemonic or private key")
 
     if (process.env.MNEMONIC != "") {
